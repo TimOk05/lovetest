@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Финал</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .celebration-text {
+            font-size: 2em;
+            color: #FF8C00;
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .requirements-list {
+            list-style: none;
+            padding: 0;
+            margin: 30px 0;
+        }
+        
+        .requirements-list li {
+            position: relative;
+            padding: 15px 0 15px 35px;
+            color: #666;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+        }
+        
+        .requirements-list li:before {
+            content: '❤';
+            position: absolute;
+            left: 0;
+            color: #ff6b6b;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        .heart-decoration {
+            position: absolute;
+            font-size: 2em;
+            color: #ff6b6b;
+            opacity: 0.1;
+            user-select: none;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="form-card">
+            <div class="question-container">
+                <h2 class="celebration-text">Мы будем отмечать мой др)</h2>
+
+                <ul class="requirements-list">
+                    <li>с меня аренда сауны на двоих и вкусняшки</li>
+                    <li>с тебя быть как всегда красивой и в чулочках</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Добавляем декоративные сердечки на фон
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.querySelector('.container');
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart-decoration';
+                heart.textContent = '❤';
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.top = Math.random() * 100 + '%';
+                heart.style.animationDelay = Math.random() * 3 + 's';
+                container.appendChild(heart);
+            }
+        });
+    </script>
+</body>
+
+</html>

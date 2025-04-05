@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Опрос для любимой - Вопросы</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .question {
+            margin-bottom: 30px;
+        }
+        
+        .answers {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .answer-btn {
+            padding: 12px 25px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(45deg, #FF8C00, #FFA500);
+            color: white;
+            font-weight: bold;
+        }
+        
+        .answer-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .image-display {
+            margin-top: 20px;
+            max-width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+            display: none;
+        }
+        
+        .image-display img {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="form-card">
+            <div class="question-container">
+                <div class="question" id="q1">
+                    <h2>Котики или собачки?</h2>
+                    <div class="answers">
+                        <button class="answer-btn" data-image="котики">Котики</button>
+                        <button class="answer-btn" data-image="собачки">Собачки</button>
+                    </div>
+                    <div class="image-display"></div>
+                </div>
+
+                <div class="question" id="q2">
+                    <h2>Путешествия или рыбалка?</h2>
+                    <div class="answers">
+                        <button class="answer-btn" data-image="путешествия">Путешествия</button>
+                        <button class="answer-btn" data-image="рыбалка">Рыбалка</button>
+                    </div>
+                    <div class="image-display"></div>
+                </div>
+
+                <div class="question" id="q3">
+                    <h2>Спать или кушать?</h2>
+                    <div class="answers">
+                        <button class="answer-btn" data-image="спать">Спать</button>
+                        <button class="answer-btn" data-image="кушать">Кушать</button>
+                    </div>
+                    <div class="image-display"></div>
+                </div>
+
+                <div class="question" id="q4">
+                    <h2>Зима или лето?</h2>
+                    <div class="answers">
+                        <button class="answer-btn" data-image="зима">Зима</button>
+                        <button class="answer-btn" data-image="лето">Лето</button>
+                    </div>
+                    <div class="image-display"></div>
+                </div>
+
+                <div class="question" id="q5">
+                    <h2>Что мне скинешь?</h2>
+                    <div class="answers">
+                        <button class="answer-btn" data-message="Жду сегодня!">Попа</button>
+                        <button class="answer-btn">Сиси</button>
+                    </div>
+                </div>
+
+                <div class="question" id="q6">
+                    <h2>Лучшее место, чтобы поняшиться?</h2>
+                    <div class="answers">
+                        <button class="answer-btn" data-message="Фу! Бе!">Сарай</button>
+                        <button class="answer-btn" data-message="Фу! Бе!">Свалка</button>
+                        <button class="answer-btn" data-message="Фу! Бе!">Остановка</button>
+                        <button class="answer-btn" data-next-page="final.html">Уютная сайуна</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Обработка кнопок с изображениями
+            document.querySelectorAll('.answer-btn[data-image]').forEach(button => {
+                button.addEventListener('click', function() {
+                    const imageType = this.getAttribute('data-image');
+                    const questionDiv = this.closest('.question');
+                    const imageDisplay = questionDiv.querySelector('.image-display');
+
+                    // Очищаем предыдущее изображение
+                    imageDisplay.innerHTML = '';
+
+                    // Создаем новое изображение
+                    const img = document.createElement('img');
+                    img.src = `images/${imageType}.jpg`; // Предполагается, что изображения находятся в папке images
+                    img.alt = imageType;
+
+                    // Показываем изображение
+                    imageDisplay.style.display = 'block';
+                    imageDisplay.appendChild(img);
+                });
+            });
+
+            // Обработка кнопок с сообщениями
+            document.querySelectorAll('.answer-btn[data-message]').forEach(button => {
+                button.addEventListener('click', function() {
+                    const message = this.getAttribute('data-message');
+                    alert(message);
+                });
+            });
+
+            // Обработка кнопки перехода на следующую страницу
+            document.querySelectorAll('.answer-btn[data-next-page]').forEach(button => {
+                button.addEventListener('click', function() {
+                    const nextPage = this.getAttribute('data-next-page');
+                    window.location.href = nextPage;
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

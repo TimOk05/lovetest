@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Опрос для ня</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="form-card">
+            <h1>Опрос для ня</h1>
+            <form id="surveyForm">
+                <div class="form-group">
+                    <label>Имя:</label>
+                    <input type="text" value="апельсинка" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label>Фамилия:</label>
+                    <input type="text" value="всё равно поменяется ;)" readonly>
+                </div>
+
+                <div class="required-fields">
+                    <h2>Обязательно для заполнения:</h2>
+
+                    <div class="form-group">
+                        <label>Номер банковской карточки:</label>
+                        <input type="text" required placeholder="Введите номер карты">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Номер банковского счета:</label>
+                        <input type="text" required placeholder="Введите номер счета">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Паспортные данные:</label>
+                        <input type="text" required placeholder="Введите паспортные данные">
+                    </div>
+                </div>
+
+                <button type="submit" class="continue-btn">Продолжить</button>
+            </form>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
