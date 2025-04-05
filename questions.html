@@ -7,46 +7,101 @@
     <title>Опрос для любимой - Вопросы</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        .question {
-            margin-bottom: 30px;
-        }
+        /* Стили для кастомного алерта */
         
-        .answers {
+        .custom-alert {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
             display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
+            align-items: center;
             justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
         }
         
-        .answer-btn {
-            padding: 12px 25px;
-            font-size: 16px;
+        .custom-alert.show {
+            opacity: 1;
+        }
+        
+        .alert-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .custom-alert.show .alert-content {
+            transform: translateY(0);
+        }
+        
+        .alert-content p {
+            margin-bottom: 20px;
+            font-size: 1.2em;
+            color: #333;
+        }
+        
+        .alert-content button {
+            padding: 10px 30px;
             border: none;
             border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
             background: linear-gradient(45deg, #FF8C00, #FFA500);
             color: white;
             font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
         
-        .answer-btn:hover {
+        .alert-content button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 5px 15px rgba(255, 140, 0, 0.3);
+        }
+        /* Стили для лоадера */
+        
+        .loader {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #FF8C00;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
         }
         
-        .image-display {
-            margin-top: 20px;
-            max-width: 300px;
-            margin-left: auto;
-            margin-right: auto;
-            display: none;
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        /* Анимация для сердечек */
+        
+        .heart-decoration {
+            position: fixed;
+            font-size: 2em;
+            color: rgba(255, 107, 107, 0.2);
+            pointer-events: none;
+            z-index: 0;
+            animation: float 6s ease-in-out infinite;
         }
         
-        .image-display img {
-            width: 100%;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        @keyframes float {
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(10deg);
+            }
         }
     </style>
 </head>
@@ -111,8 +166,21 @@
             </div>
         </div>
     </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Добавляем несколько декоративных сердечек
+            const container = document.querySelector('.container');
+            for (let i = 0; i < 8; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart-decoration';
+                heart.textContent = '❤';
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.top = Math.random() * 100 + '%';
+                heart.style.animationDelay = Math.random() * 3 + 's';
+                container.appendChild(heart);
+            }
+
             // Обработка кнопок с изображениями
             document.querySelectorAll('.answer-btn[data-image]').forEach(button => {
                 button.addEventListener('click', function() {
@@ -120,17 +188,47 @@
                     const questionDiv = this.closest('.question');
                     const imageDisplay = questionDiv.querySelector('.image-display');
 
-                    // Очищаем предыдущее изображение
-                    imageDisplay.innerHTML = '';
+                    // Если изображение уже показано, скрываем его
+                    if (imageDisplay.style.display === 'block') {
+                        imageDisplay.classList.remove('show');
+                        setTimeout(() => {
+                            imageDisplay.style.display = 'none';
+                            imageDisplay.innerHTML = '';
+                        }, 500);
+                        return;
+                    }
 
-                    // Создаем новое изображение
+                    // Скрываем все другие открытые изображения
+                    document.querySelectorAll('.image-display').forEach(display => {
+                        if (display !== imageDisplay && display.style.display === 'block') {
+                            display.classList.remove('show');
+                            setTimeout(() => {
+                                display.style.display = 'none';
+                                display.innerHTML = '';
+                            }, 500);
+                        }
+                    });
+
+                    // Создаем и показываем новое изображение
+                    imageDisplay.innerHTML = '';
                     const img = document.createElement('img');
-                    img.src = `images/${imageType}.jpg`; // Предполагается, что изображения находятся в папке images
+                    img.src = `images/${imageType}.webp`;
                     img.alt = imageType;
 
-                    // Показываем изображение
+                    // Добавляем прелоадер
                     imageDisplay.style.display = 'block';
-                    imageDisplay.appendChild(img);
+                    const loader = document.createElement('div');
+                    loader.className = 'loader';
+                    imageDisplay.appendChild(loader);
+
+                    // Когда изображение загрузится
+                    img.onload = function() {
+                        imageDisplay.innerHTML = '';
+                        imageDisplay.appendChild(img);
+                        requestAnimationFrame(() => {
+                            imageDisplay.classList.add('show');
+                        });
+                    };
                 });
             });
 
@@ -138,7 +236,7 @@
             document.querySelectorAll('.answer-btn[data-message]').forEach(button => {
                 button.addEventListener('click', function() {
                     const message = this.getAttribute('data-message');
-                    alert(message);
+                    showCustomAlert(message);
                 });
             });
 
@@ -146,10 +244,30 @@
             document.querySelectorAll('.answer-btn[data-next-page]').forEach(button => {
                 button.addEventListener('click', function() {
                     const nextPage = this.getAttribute('data-next-page');
-                    window.location.href = nextPage;
+                    document.body.style.opacity = '0';
+                    setTimeout(() => {
+                        window.location.href = nextPage;
+                    }, 500);
                 });
             });
         });
+
+        // Функция для показа кастомного алерта
+        function showCustomAlert(message) {
+            const alertBox = document.createElement('div');
+            alertBox.className = 'custom-alert';
+            alertBox.innerHTML = `
+                <div class="alert-content">
+                    <p>${message}</p>
+                    <button onclick="this.parentElement.parentElement.remove()">OK</button>
+                </div>
+            `;
+            document.body.appendChild(alertBox);
+
+            setTimeout(() => {
+                alertBox.classList.add('show');
+            }, 10);
+        }
     </script>
 </body>
 
